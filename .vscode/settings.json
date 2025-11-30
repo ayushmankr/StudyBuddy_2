@@ -1,0 +1,6 @@
+{
+  "code-runner.runInTerminal": true,
+  "code-runner.executorMap": {
+    "java": "javac -cp \"lib\\sqlite-jdbc-3.42.0.0.jar\" -d out src\\Database.java src\\LMSApp.java; if ($LASTEXITCODE -ne 0) { Write-Host 'Compilation failed'; exit $LASTEXITCODE } ; java -cp \"out;lib\\sqlite-jdbc-3.42.0.0.jar\" LMSApp"
+  }
+}
