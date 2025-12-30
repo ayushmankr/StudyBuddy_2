@@ -101,4 +101,58 @@ public class Database {
         }
         return out;
     }
+
+    public static boolean deleteStudent(int studentId) {
+        String sql = "DELETE FROM students WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement p = conn.prepareStatement(sql)) {
+            p.setInt(1, studentId);
+            int rowsAffected = p.executeUpdate();
+            // Also delete associated enrollments
+            if (rowsAffected > 0) {
+                String deleteEnrollments = "DELETE FROM enrollments WHERE student_id = ?";
+                try (PreparedStatement p2 = conn.prepareStatement(deleteEnrollments)) {
+                    p2.setInt(1, studentId);
+                    p2.executeUpdate();
+                }
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteCourse(int courseId) {
+        String sql = "DELETE FROM courses WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement p = conn.prepareStatement(sql)) {
+            p.setInt(1, courseId);
+            int rowsAffected = p.executeUpdate();
+            // Also delete associated enrollments
+            if (rowsAffected > 0) {
+                String deleteEnrollments = "DELETE FROM enrollments WHERE course_id = ?";
+                try (PreparedStatement p2 = conn.prepareStatement(deleteEnrollments)) {
+                    p2.setInt(1, courseId);
+                    p2.executeUpdate();
+                }
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteEnrollment(int enrollmentId) {
+        String sql = "DELETE FROM enrollments WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement p = conn.prepareStatement(sql)) {
+            p.setInt(1, enrollmentId);
+            int rowsAffected = p.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
